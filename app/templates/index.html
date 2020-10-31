@@ -1,0 +1,9 @@
+
+{% block content %}
+
+{% for quote in getquotes %}
+<p>{{quote.author}}</p>
+{% endfor %}
+
+{% endblock %}
+
