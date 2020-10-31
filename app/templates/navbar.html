@@ -16,7 +16,8 @@
   <div class="collapse navbar-collapse" id="basicExampleNav">
 
     <ul class="navbar-nav ml-auto">
-      <a class="nav-link text-white" aria-haspopup="true" aria-expanded="false" href = "/">New Blog</a>
+      <a class="nav-link text-white" aria-haspopup="true" aria-expanded="false" href = "{{url_for('main.newBlog')}}">New blog</a>
+      <a class="nav-link text-white" aria-haspopup="true" aria-expanded="false" href = "{{url_for('main.allBlogs')}}">All Blogs</a>
       {% if current_user.is_authenticated %}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
