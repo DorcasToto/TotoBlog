@@ -11,7 +11,7 @@
     {% for blog in blogs %}
     <p>{{blog.title_blog}}</p>
     <p>{{blog.description}}</p>
-
+    <p>By: {{blog.user.username}}</p>
     {%endfor%}
 </div>
 <div class="col-md-2"></div>

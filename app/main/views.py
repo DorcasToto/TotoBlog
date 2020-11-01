@@ -23,6 +23,7 @@ def profile(uname):
     return render_template('profile/profile.html',user = user,pitches=pitches)  
 
 @main.route('/blog/newBlog',methods = ['GET','POST'])
+@login_required
 def newBlog():
     blogForm = BlogForm()
     if blogForm.validate_on_submit():
