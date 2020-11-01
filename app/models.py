@@ -66,7 +66,7 @@ class Blog(db.Model):
         return f'Blogs {self.blog_title}'
 
 class Comment(db.Model):
-     __tablename__ = 'comments'
+    __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.String(255))
     blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id',ondelete='CASCADE'))

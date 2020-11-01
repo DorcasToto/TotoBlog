@@ -3,8 +3,8 @@ from flask import render_template,request,redirect,url_for
 from . import main
 from flask_login import login_user,logout_user,login_required,current_user
 from ..requests import getQuotes
-from .forms import BlogForm
-from ..models import Blog
+from .forms import BlogForm,CommentForm
+from ..models import Blog,Comment
 
 @main.route('/',methods = ['GET'])
 def index():
@@ -41,4 +41,18 @@ def newBlog():
 def allBlogs():
     blogs = Blog.getallBlogs()
     return render_template('blogs.html', blogs=blogs)
+
+
+@main.route('/comment/new<int:id>', methods=['GET', 'POST'])
+def newComment(id):
+    blog = Blog.query.filter_by(id).all()
+    blogComments = Comment.query.filter_by(blog_id=id).all()
+    comment_form = CommentForm()
+    if comment_form.validate_on_submit():
+        comment = comment_form.comment.data
+        new_comment = Comment(blog_id=id, comment=comment, user=current_user)
+        new_comment.saveComment()
+    return render_template('newComment.html', blog=blog, blog_comments=blogComments, comment_form=comment_form)
+
+
 
