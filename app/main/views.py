@@ -1,6 +1,7 @@
 
 from flask import render_template,request,redirect,url_for
 from . import main
+from .. import db
 from flask_login import login_user,logout_user,login_required,current_user
 from ..requests import getQuotes
 from .forms import BlogForm,CommentForm
@@ -38,12 +39,14 @@ def newBlog():
 
 @main.route('/blog/allblogs', methods=['GET', 'POST'])
 @login_required
+@login_required
 def allBlogs():
     blogs = Blog.getallBlogs()
     return render_template('blogs.html', blogs=blogs)
 
 
 @main.route('/comment/new/<int:id>', methods=['GET', 'POST'])
+@login_required
 def newComment(id):
     blog = Blog.query.filter_by(id = id).all()
     blogComments = Comment.query.filter_by(blog_id=id).all()
@@ -54,5 +57,36 @@ def newComment(id):
         new_comment.saveComment()
     return render_template('newComment.html', blog=blog, blog_comments=blogComments, comment_form=comment_form)
 
+@main.route('/delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def deleteComment(id):
+    comment =Comment.query.filter_by(id = id).all()
+    Comment.deleteComment(comment)
+    flash('comment succesfully deleted')
+    return redirect (url_for('main.allblogs'))
 
 
+@main.route('/delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def deleteBlog(id):
+    blog = Blog.query.filter_by(id = id)
+    Blog.deleteBlog(blog)
+    return redirect(url_for('main.allblogs'))   
+
+
+@main.route('/update/<int:id>', methods=['GET', 'POST'])
+@login_required
+def updateBlog(id):
+    blog = Blog.query.filter_by(id = id).all()
+    form = BlogForm()
+    if form.validate_on_submit():
+        blog.title_blog = form.blogTitle.data
+        blog.description = form.description.data
+        db.session.add(blog)
+        db.session.commit()
+
+        return redirect(url_for('main.allBlogs'))
+    elif request.method == 'GET':
+        form.blogTitle.data = blog.title_blog
+        form.description.data = blog.description
+    return render_template('updateBlog.html', form=form)

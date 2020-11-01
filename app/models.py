@@ -55,6 +55,10 @@ class Blog(db.Model):
     def saveBlog(self):
         db.session.add(self)
         db.session.commit()
+
+    def deleteBlog(self):
+        db.session.delete(self)
+        db.session.commit()    
     @classmethod
     def getBlogs(cls, id):
         blogs = Blog.query.filter_by(id=id).all()

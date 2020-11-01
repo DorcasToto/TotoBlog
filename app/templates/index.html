@@ -1,9 +1,13 @@
 {% extends 'base.html'%}
 {% block content %}
+<h3 style="font-size: 70px; font-family: 'Charm', cursive;  padding-top: 40px; text-align: center;" class="text-default">Welcome to TotoBlog, here are some of the inspiration quotes that you will make your day Awesome </h3>
+<hr>
+<div style="font-size: 30px; font-family: 'Merienda', cursive;  padding-top: 40px; text-align: center;">
+    {% for quote in getquotes %}
+    <p>{{quote.quote}}</p>
+    <p class="text-danger"> By: {{quote.author}}</p>
+    {% endfor %}
 
-{% for quote in getquotes %}
-<p>{{quote.author}}</p>
-<p>{{quote.quote}}</p>
-{% endfor %}
+</div>
 
 {% endblock %}
