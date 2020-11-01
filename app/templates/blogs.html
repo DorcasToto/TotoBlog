@@ -12,7 +12,9 @@
     <p>{{blog.title_blog}}</p>
     <p>{{blog.description}}</p>
     <p>By: {{blog.user.username}}</p>
+    <a href="{{url_for('main.newComment', id=blog.id)}}"><i class="fas fa-comment fa-fw"></i></a>
     {%endfor%}
+    
 </div>
 <div class="col-md-2"></div>
 </div>

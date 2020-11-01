@@ -25,6 +25,7 @@ class User(UserMixin,db.Model):
     profile_pic_path = db.Column(db.String())
     pass_secure = db.Column(db.String(255))
     blog = db.relationship('Blog', backref ='user', passive_deletes=True,lazy = "dynamic")
+    comments = db.relationship('Comment', backref ='user' , passive_deletes=True,  lazy ="dynamic")
 
 
     @property

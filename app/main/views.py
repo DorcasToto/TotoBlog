@@ -43,9 +43,9 @@ def allBlogs():
     return render_template('blogs.html', blogs=blogs)
 
 
-@main.route('/comment/new<int:id>', methods=['GET', 'POST'])
+@main.route('/comment/new/<int:id>', methods=['GET', 'POST'])
 def newComment(id):
-    blog = Blog.query.filter_by(id).all()
+    blog = Blog.query.filter_by(id = id).all()
     blogComments = Comment.query.filter_by(blog_id=id).all()
     comment_form = CommentForm()
     if comment_form.validate_on_submit():
