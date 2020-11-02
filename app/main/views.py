@@ -99,24 +99,30 @@ def deleteComment(id):
 @main.route('/delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def deleteBlog(id):
-    blog = Blog.query.filter_by(id = id)
-    Blog.deleteBlog(blog)
-    return redirect(url_for('main.allblogs'))   
+    # blog = Blog.query.filter_by(id = id)
+    blog = Blog.query.get_or_404(id)
+
+    if blog.user != current_user:
+        abort(404)
+    db.session.delete(blog)
+    db.session.commit()
+    # Blog.deleteBlog(blog)
+    return redirect(url_for('main.allBlogs'))   
 
 
 @main.route('/update/<int:id>', methods=['GET', 'POST'])
 @login_required
 def updateBlog(id):
-    blog = Blog.query.filter_by(id = id).all()
+    blog = Blog.query.get_or_404(id)
     form = BlogForm()
     if form.validate_on_submit():
         blog.title_blog = form.blogTitle.data
-        blog.description = form.description.data
+        blog.description = form.blogDescription.data
         db.session.add(blog)
         db.session.commit()
 
         return redirect(url_for('main.allBlogs'))
     elif request.method == 'GET':
         form.blogTitle.data = blog.title_blog
-        form.description.data = blog.description
+        form.blogDescription.data = blog.description
     return render_template('updateBlog.html', form=form)
