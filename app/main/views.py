@@ -97,18 +97,12 @@ def deleteComment(id):
     return redirect (url_for('main.allBlogs'))
 
 
-@main.route('/delete/<int:id>', methods=['GET', 'POST'])
+@main.route('/deleteblog/<int:id>', methods=['GET', 'POST'])
 @login_required
 def deleteBlog(id):
-    # blog = Blog.query.filter_by(id = id)
     blog = Blog.query.get_or_404(id)
-
-    if blog.user != current_user:
-        abort(404)
     db.session.delete(blog)
     db.session.commit()
-    # Blog.deleteBlog(blog)
-    flash('comment succesfully deleted')
     return redirect(url_for('main.allBlogs'))   
 
 
