@@ -1,5 +1,5 @@
 
-from flask import render_template,request,redirect,url_for
+from flask import render_template,request,redirect,url_for,flash
 from . import main
 from .. import db,photos
 from flask_login import login_user,logout_user,login_required,current_user
@@ -90,10 +90,11 @@ def newComment(id):
 @main.route('/delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def deleteComment(id):
-    comment =Comment.query.filter_by(id = id).all()
-    Comment.deleteComment(comment)
+    comment =Comment.query.get_or_404(id)
+    db.session.delete(comment)
+    db.session.commit()
     flash('comment succesfully deleted')
-    return redirect (url_for('main.allblogs'))
+    return redirect (url_for('main.allBlogs'))
 
 
 @main.route('/delete/<int:id>', methods=['GET', 'POST'])
@@ -107,6 +108,7 @@ def deleteBlog(id):
     db.session.delete(blog)
     db.session.commit()
     # Blog.deleteBlog(blog)
+    flash('comment succesfully deleted')
     return redirect(url_for('main.allBlogs'))   
 
 
